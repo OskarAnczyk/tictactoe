@@ -11,6 +11,11 @@ public class TicTacToe extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        TicTacToeBoard board = new TicTacToeBoard();
 
+        primaryStage.setTitle("TicTacToe");
+        primaryStage.setScene(board.makeBoard());
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 }
