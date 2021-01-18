@@ -22,8 +22,7 @@ public class TicTacToeBoard {
 
         GridPane gridPane = makeGridPane(makeBackground());
         makeStartingBoard();
-        setMoveBehaviour(this.fields);
-        transferFromFieldToGridPane(gridPane);
+        gridPane = transferFromFieldToGridPane(gridPane);
 
         this.board.setBottom(gridPane);
 
@@ -37,16 +36,19 @@ public class TicTacToeBoard {
         gridPane.setPadding(new Insets(0, 0, 0, 0));
         gridPane.setVgap(300);
         gridPane.setHgap(300);
+        gridPane.setGridLinesVisible(true);
         gridPane.setBackground(background);
         return gridPane;
     }
 
-    private void transferFromFieldToGridPane(GridPane gridPane) {
+    private GridPane transferFromFieldToGridPane(GridPane gridPane) {
+        GridPane gridPaneNew = gridPane;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                gridPane.add(this.fields[i][j],i,j,2,2);
+                gridPaneNew.add(this.fields[i][j],i,j,2,2);
             }
         }
+        return gridPaneNew;
     }
 
     private Background makeBackground() {
@@ -68,29 +70,29 @@ public class TicTacToeBoard {
             for (int j = 0; j < 3; j++) {
                 Field field = new Field(FieldType.EMPTY);
                 field.setImage(EMPTY_IMAGE);
+                field = makeMove(field);
                 this.fields[i][j] = field;
             }
         }
     }
 
-    private void setMoveBehaviour(Field[][] fields) {
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields[0].length; j++) {
-                makeMove(fields[i][j]);
-            }
-        }
-    }
-
-    private void makeMove(Field field) {
-        field.setOnMouseClicked(e -> {
-            if (field.getFieldType() == FieldType.EMPTY) {
-                field.setFieldType(FieldType.PIECE_O);
+    private Field makeMove(Field field) {
+        Field fieldNew = field;
+        fieldNew.setOnMouseClicked(e -> {
+            if(field.getFieldType() == FieldType.EMPTY){
                 field.setImage(CIRCLE_IMAGE);
-                System.out.println("malfajt");
+                field.setFieldType(FieldType.PIECE_O);
+                int X = (int) (e.getSceneX() / 300);
+                int Y = (int) (e.getSceneY() / 300);
+                System.out.println(X + " " + Y);
+                this.fields[X][Y].setFieldType(FieldType.PIECE_O);
             }
+
 
 
             e.consume();
         });
+
+        return fieldNew;
     }
 }
