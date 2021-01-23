@@ -3,6 +3,7 @@ package com.kodilla;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -15,14 +16,23 @@ public class TicTacToeBoard {
     private final Image EMPTY_IMAGE = new Image("file:src/main/resources/empty.png");
     private Field[][] fields = new Field[3][3];
     private BorderPane board = new BorderPane();
+    private Difficulty difficulty;
+    private GridPane gridPane;
+    private int circleWins;
+    private int crossWins;
+    private int draws;
 
 
     public Scene makeBoard() {
+        setDifficulty(Difficulty.EASY);
+        setCircleWins(0);
+        setCrossWins(0);
+        setDraws(0);
         this.board.setTop(makeFlowPane());
 
-        GridPane gridPane = makeGridPane(makeBackground());
+        gridPane = makeGridPane(makeBackground());
         makeStartingBoard();
-        gridPane = transferFromFieldToGridPane(gridPane);
+        transferFromFieldToGridPane();
 
         this.board.setBottom(gridPane);
 
@@ -41,14 +51,12 @@ public class TicTacToeBoard {
         return gridPane;
     }
 
-    private GridPane transferFromFieldToGridPane(GridPane gridPane) {
-        GridPane gridPaneNew = gridPane;
+    private void transferFromFieldToGridPane() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                gridPaneNew.add(this.fields[i][j],i,j,2,2);
+                gridPane.add(this.fields[i][j],i,j,2,2);
             }
         }
-        return gridPaneNew;
     }
 
     private Background makeBackground() {
@@ -60,6 +68,17 @@ public class TicTacToeBoard {
     private FlowPane makeFlowPane() {
         FlowPane flowPane = new FlowPane();
 
+        Button buttonReset = new Button("reset");
+
+        buttonReset.setOnMouseClicked(e -> {
+            resetBoard();
+        });
+
+        buttonReset.setPrefHeight(100);
+        buttonReset.setPrefWidth(100);
+
+
+        flowPane.getChildren().add(buttonReset);
         flowPane.setPrefSize(900, 100);
 
         return flowPane;
@@ -86,13 +105,132 @@ public class TicTacToeBoard {
                 int Y = (int) (e.getSceneY() / 300);
                 System.out.println(X + " " + Y);
                 this.fields[X][Y].setFieldType(FieldType.PIECE_O);
+            } else {
+                return;
             }
 
+            if(checkWin(FieldType.PIECE_O)){
+                System.out.println("Wygrana");
+                circleWin();
+                resetBoard();
+                return;
+            }
 
+            if(this.difficulty == Difficulty.EASY){
+                boolean moveFound = false;
+                for(int i = 0; i < 3; i++){
+                    for(int k = 0; k < 3;k++){
+                        if(this.fields[i][k].getFieldType() == FieldType.EMPTY){
+                            this.fields[i][k].setFieldType(FieldType.PIECE_X);
+                            this.fields[i][k].setImage(CROSS_IMAGE);
+                            moveFound = true;
+                            break;
+                        }
+                    }
+                    if(moveFound){
+                        break;
+                    }
+                }
+            } else {
+
+            }
+
+            if(checkWin(FieldType.PIECE_X)){
+                crossWin();
+                System.out.println("Przegrana");
+                resetBoard();
+                return;
+            }
 
             e.consume();
         });
 
         return fieldNew;
+    }
+
+    private boolean checkWin(FieldType field){
+        if(this.fields[0][0].getFieldType() == field && this.fields[0][1].getFieldType() == field && this.fields[0][2].getFieldType() == field){
+            return true;
+        }
+
+        if(this.fields[1][0].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[1][2].getFieldType() == field){
+            return true;
+        }
+
+        if(this.fields[2][0].getFieldType() == field && this.fields[2][1].getFieldType() == field && this.fields[2][2].getFieldType() == field){
+            return true;
+        }
+
+        if(this.fields[0][0].getFieldType() == field && this.fields[1][0].getFieldType() == field && this.fields[2][0].getFieldType() == field){
+            return true;
+        }
+
+        if(this.fields[0][1].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][1].getFieldType() == field){
+            return true;
+        }
+
+        if(this.fields[0][2].getFieldType() == field && this.fields[1][2].getFieldType() == field && this.fields[2][2].getFieldType() == field){
+            return true;
+        }
+
+        if(this.fields[0][0].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][2].getFieldType() == field){
+            return true;
+        }
+
+        if(this.fields[0][2].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][0].getFieldType() == field){
+            return true;
+        }
+
+        return false;
+    }
+
+    private void resetBoard(){
+        makeStartingBoard();
+        this.gridPane.getChildren().removeAll();
+        transferFromFieldToGridPane();
+    }
+
+    private void circleWin(){
+        setCircleWins(getCircleWins() + 1);
+    }
+
+    private void crossWin(){
+        setCrossWins(getCrossWins() + 1);
+    }
+
+    private void isDraw(){
+        setDraws(getDraws() + 1);
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public int getCircleWins() {
+        return circleWins;
+    }
+
+    public void setCircleWins(int circleWins) {
+        this.circleWins = circleWins;
+    }
+
+    public int getCrossWins() {
+        return crossWins;
+    }
+
+    public void setCrossWins(int crossWins) {
+        this.crossWins = crossWins;
+    }
+
+    public int getDraws() {
+        return draws;
+    }
+
+    public void setDraws(int draws) {
+        this.draws = draws;
     }
 }
