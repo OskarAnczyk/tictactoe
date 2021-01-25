@@ -3,9 +3,10 @@ package com.kodilla;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -54,7 +55,7 @@ public class TicTacToeBoard {
     private void transferFromFieldToGridPane() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                gridPane.add(this.fields[i][j],i,j,2,2);
+                gridPane.add(this.fields[i][j], i, j, 2, 2);
             }
         }
     }
@@ -89,45 +90,48 @@ public class TicTacToeBoard {
             for (int j = 0; j < 3; j++) {
                 Field field = new Field(FieldType.EMPTY);
                 field.setImage(EMPTY_IMAGE);
-                field = makeMove(field);
+                setOnClickAction(field);
                 this.fields[i][j] = field;
             }
         }
     }
 
-    private Field makeMove(Field field) {
-        Field fieldNew = field;
-        fieldNew.setOnMouseClicked(e -> {
-            if(field.getFieldType() == FieldType.EMPTY){
+    private void setOnClickAction(Field field) {
+        field.setOnMouseClicked(e -> {
+            if (field.getFieldType() == FieldType.EMPTY) {
                 field.setImage(CIRCLE_IMAGE);
                 field.setFieldType(FieldType.PIECE_O);
-                int X = (int) (e.getSceneX() / 300);
-                int Y = (int) (e.getSceneY() / 300);
-                System.out.println(X + " " + Y);
-                this.fields[X][Y].setFieldType(FieldType.PIECE_O);
+
             } else {
                 return;
             }
 
-            if(checkWin(FieldType.PIECE_O)){
+            if (checkWin(FieldType.PIECE_O)) {
                 System.out.println("Wygrana");
                 circleWin();
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText("Look, an Information Dialog");
+                alert.setContentText("I have a great message for you!");
+                alert.showAndWait();
+
                 resetBoard();
                 return;
             }
 
-            if(this.difficulty == Difficulty.EASY){
+            if (this.difficulty == Difficulty.EASY) {
                 boolean moveFound = false;
-                for(int i = 0; i < 3; i++){
-                    for(int k = 0; k < 3;k++){
-                        if(this.fields[i][k].getFieldType() == FieldType.EMPTY){
+                for (int i = 0; i < 3; i++) {
+                    for (int k = 0; k < 3; k++) {
+                        if (this.fields[i][k].getFieldType() == FieldType.EMPTY) {
                             this.fields[i][k].setFieldType(FieldType.PIECE_X);
                             this.fields[i][k].setImage(CROSS_IMAGE);
                             moveFound = true;
                             break;
                         }
                     }
-                    if(moveFound){
+                    if (moveFound) {
                         break;
                     }
                 }
@@ -135,7 +139,7 @@ public class TicTacToeBoard {
 
             }
 
-            if(checkWin(FieldType.PIECE_X)){
+            if (checkWin(FieldType.PIECE_X)) {
                 crossWin();
                 System.out.println("Przegrana");
                 resetBoard();
@@ -144,61 +148,59 @@ public class TicTacToeBoard {
 
             e.consume();
         });
-
-        return fieldNew;
     }
 
-    private boolean checkWin(FieldType field){
-        if(this.fields[0][0].getFieldType() == field && this.fields[0][1].getFieldType() == field && this.fields[0][2].getFieldType() == field){
+    private boolean checkWin(FieldType field) {
+        if (this.fields[0][0].getFieldType() == field && this.fields[0][1].getFieldType() == field && this.fields[0][2].getFieldType() == field) {
             return true;
         }
 
-        if(this.fields[1][0].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[1][2].getFieldType() == field){
+        if (this.fields[1][0].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[1][2].getFieldType() == field) {
             return true;
         }
 
-        if(this.fields[2][0].getFieldType() == field && this.fields[2][1].getFieldType() == field && this.fields[2][2].getFieldType() == field){
+        if (this.fields[2][0].getFieldType() == field && this.fields[2][1].getFieldType() == field && this.fields[2][2].getFieldType() == field) {
             return true;
         }
 
-        if(this.fields[0][0].getFieldType() == field && this.fields[1][0].getFieldType() == field && this.fields[2][0].getFieldType() == field){
+        if (this.fields[0][0].getFieldType() == field && this.fields[1][0].getFieldType() == field && this.fields[2][0].getFieldType() == field) {
             return true;
         }
 
-        if(this.fields[0][1].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][1].getFieldType() == field){
+        if (this.fields[0][1].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][1].getFieldType() == field) {
             return true;
         }
 
-        if(this.fields[0][2].getFieldType() == field && this.fields[1][2].getFieldType() == field && this.fields[2][2].getFieldType() == field){
+        if (this.fields[0][2].getFieldType() == field && this.fields[1][2].getFieldType() == field && this.fields[2][2].getFieldType() == field) {
             return true;
         }
 
-        if(this.fields[0][0].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][2].getFieldType() == field){
+        if (this.fields[0][0].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][2].getFieldType() == field) {
             return true;
         }
 
-        if(this.fields[0][2].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][0].getFieldType() == field){
+        if (this.fields[0][2].getFieldType() == field && this.fields[1][1].getFieldType() == field && this.fields[2][0].getFieldType() == field) {
             return true;
         }
 
         return false;
     }
 
-    private void resetBoard(){
+    private void resetBoard() {
         makeStartingBoard();
         this.gridPane.getChildren().removeAll();
         transferFromFieldToGridPane();
     }
 
-    private void circleWin(){
+    private void circleWin() {
         setCircleWins(getCircleWins() + 1);
     }
 
-    private void crossWin(){
+    private void crossWin() {
         setCrossWins(getCrossWins() + 1);
     }
 
-    private void isDraw(){
+    private void isDraw() {
         setDraws(getDraws() + 1);
     }
 
