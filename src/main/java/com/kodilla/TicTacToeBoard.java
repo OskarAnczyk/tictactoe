@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import java.util.Random;
 
 public class TicTacToeBoard {
     private final Image BACKGROUND_IMAGE = new Image("file:src/main/resources/tictactoeboard.png");
@@ -22,6 +23,7 @@ public class TicTacToeBoard {
     private int circleWins;
     private int crossWins;
     private int draws;
+    private Button buttonDifficulty;
 
 
     public Scene makeBoard() {
@@ -69,20 +71,56 @@ public class TicTacToeBoard {
     private FlowPane makeFlowPane() {
         FlowPane flowPane = new FlowPane();
 
-        Button buttonReset = new Button("reset");
-
+        Button buttonReset = new Button("Reset");
         buttonReset.setOnMouseClicked(e -> {
             resetBoard();
         });
-
         buttonReset.setPrefHeight(100);
         buttonReset.setPrefWidth(100);
 
+        this.buttonDifficulty  = new Button(this.difficulty.toString());
+        buttonDifficulty.setOnMouseClicked(e -> {
+            changeDifficulty();
+        });
+        buttonDifficulty.setPrefHeight(100);
+        buttonDifficulty.setPrefWidth(100);
+
+        Button buttonSave = new Button("Save");
+        buttonSave.setPrefSize(100,100);
+        buttonSave.setOnMouseClicked(e -> {
+            save();
+        });
+
+        Button buttonLoad = new Button("Load");
+        buttonLoad.setPrefSize(100,100);
 
         flowPane.getChildren().add(buttonReset);
+        flowPane.getChildren().add(buttonDifficulty);
+        flowPane.getChildren().add(buttonSave);
+        flowPane.getChildren().add(buttonLoad);
         flowPane.setPrefSize(900, 100);
 
         return flowPane;
+    }
+
+    private void changeDifficulty() {
+        switch(this.difficulty){
+            case EASY:
+                setDifficulty(Difficulty.HARD);
+                this.buttonDifficulty.setText("HARD");
+                break;
+            case HARD:
+                setDifficulty(Difficulty.EASY);
+                this.buttonDifficulty.setText("EASY");
+                break;
+        }
+        resetResults();
+    }
+
+    private void resetResults(){
+        setCircleWins(0);
+        setCrossWins(0);
+        setDraws(0);
     }
 
     private void makeStartingBoard() {
@@ -101,19 +139,31 @@ public class TicTacToeBoard {
             if (field.getFieldType() == FieldType.EMPTY) {
                 field.setImage(CIRCLE_IMAGE);
                 field.setFieldType(FieldType.PIECE_O);
-
+                this.buttonDifficulty.setDisable(true);
             } else {
                 return;
             }
 
             if (checkWin(FieldType.PIECE_O)) {
-                System.out.println("Wygrana");
                 circleWin();
 
                 Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Information Dialog");
-                alert.setHeaderText("Look, an Information Dialog");
-                alert.setContentText("I have a great message for you!");
+                alert.setTitle("Wynik rozgrywki");
+                alert.setHeaderText("Gratulacje! Wygrales!");
+                alert.setContentText("Aktualny wynik to:\nKolko: " + this.circleWins + "\nKrzyzyk: " + this.crossWins + "\nRemis: " + this.draws);
+                alert.showAndWait();
+
+                resetBoard();
+                return;
+            }
+
+            if(checkDraw()){
+                isDraw();
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Wynik rozgrywki");
+                alert.setHeaderText("Remis.");
+                alert.setContentText("Aktualny wynik to:\nKolko: " + this.circleWins + "\nKrzyzyk: " + this.crossWins + "\nRemis: " + this.draws);
                 alert.showAndWait();
 
                 resetBoard();
@@ -135,19 +185,47 @@ public class TicTacToeBoard {
                         break;
                     }
                 }
-            } else {
-
+            } else if(this.difficulty == Difficulty.HARD){
+                boolean moveFound = false;
+                Random rand = new Random();
+                while(!moveFound){
+                    int i = rand.nextInt(3);
+                    int j = rand.nextInt(3);
+                    if(this.fields[i][j].getFieldType() == FieldType.EMPTY){
+                        this.fields[i][j].setFieldType(FieldType.PIECE_X);
+                        this.fields[i][j].setImage(CROSS_IMAGE);
+                        moveFound = true;
+                    }
+                }
             }
 
             if (checkWin(FieldType.PIECE_X)) {
                 crossWin();
-                System.out.println("Przegrana");
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Wynik rozgrywki");
+                alert.setHeaderText("Niestety przegrales...");
+                alert.setContentText("Aktualny wynik to:\nKolko: " + this.circleWins + "\nKrzyzyk: " + this.crossWins + "\nRemis: " + this.draws);
+                alert.showAndWait();
+
                 resetBoard();
                 return;
             }
 
             e.consume();
         });
+    }
+
+    private boolean checkDraw() {
+        boolean isDraw = true;
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(this.fields[i][j].getFieldType() == FieldType.EMPTY){
+                    isDraw = false;
+                }
+            }
+        }
+        return isDraw;
     }
 
     private boolean checkWin(FieldType field) {
@@ -188,7 +266,7 @@ public class TicTacToeBoard {
 
     private void resetBoard() {
         makeStartingBoard();
-        this.gridPane.getChildren().removeAll();
+        this.buttonDifficulty.setDisable(false);
         transferFromFieldToGridPane();
     }
 
