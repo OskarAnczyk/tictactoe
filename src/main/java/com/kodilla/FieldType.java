@@ -1,7 +1,7 @@
 package com.kodilla;
 
-public enum FieldType {
+public enum FieldType{
     EMPTY,
     PIECE_O,
-    PIECE_X
+    PIECE_X;
 }

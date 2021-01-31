@@ -3,7 +3,11 @@ package com.kodilla;
 
 import javafx.scene.image.ImageView;
 
-public class Field extends ImageView {
+import java.io.IOException;
+import java.io.Serializable;
+
+
+public class Field extends ImageView implements Serializable {
     private FieldType fieldType;
 
     public Field(FieldType fieldType){
