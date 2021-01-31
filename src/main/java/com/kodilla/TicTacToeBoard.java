@@ -79,6 +79,8 @@ public class TicTacToeBoard {
         Button buttonReset = new Button("Reset");
         buttonReset.setOnMouseClicked(e -> {
             resetBoard();
+            resetResults();
+            setText();
         });
         buttonReset.setPrefHeight(100);
         buttonReset.setPrefWidth(100);
