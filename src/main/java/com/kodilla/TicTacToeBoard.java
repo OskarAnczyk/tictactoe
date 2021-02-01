@@ -123,29 +123,60 @@ public class TicTacToeBoard {
     private void loadGame() {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(save));
-            int[] results;
-            results = (int[]) ois.readObject();
-            setCircleWins(results[0]);
-            setCrossWins(results[1]);
-            setDraws(results[2]);
+            Save results;
+            results = (Save) ois.readObject();
+            setCircleWins(results.getCircleWins());
+            setCrossWins(results.getCrossWins());
+            setDraws(results.getDraws());
+
+
+            FieldType[][] loadedFields = results.getFields();
+            for (int i = 0; i < fields.length; i++) {
+                for (int j = 0; j < fields[0].length; j++) {
+                    this.fields[i][j].setFieldType(loadedFields[i][j]);
+                    this.fields[i][j].setImage(chooseImage(loadedFields[i][j]));
+                }
+            }
+
             ois.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
+    private Image chooseImage(FieldType fieldType){
+        switch (fieldType){
+            case PIECE_O:
+                return CIRCLE_IMAGE;
+            case PIECE_X:
+                return CROSS_IMAGE;
+            case EMPTY:
+                return EMPTY_IMAGE;
+        }
+        return EMPTY_IMAGE;
+    }
+
     private void saveGame() {
         try {
             ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream(save));
-            int[] results = new int[3];
-            results[0] = this.circleWins;
-            results[1] = this.crossWins;
-            results[2] = this.draws;
+            Save results = new Save(this.circleWins, this.crossWins, this.draws, transferToFieldTypeArray());
             oos.writeObject(results);
             oos.close();
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    private FieldType[][] transferToFieldTypeArray(){
+        FieldType[][] arrayFieldType = new FieldType[this.fields.length][this.fields[0].length];
+
+        for (int i = 0; i < this.fields.length; i++) {
+            for (int j = 0; j < this.fields[0].length; j++) {
+                arrayFieldType[i][j] = this.fields[i][j].getFieldType();
+            }
+        }
+
+        return arrayFieldType;
     }
 
     private void changeDifficulty() {
@@ -313,9 +344,13 @@ public class TicTacToeBoard {
     }
 
     private void resetBoard() {
-        makeStartingBoard();
         this.buttonDifficulty.setDisable(false);
-        transferFromFieldToGridPane();
+        for (int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields[0].length; j++) {
+                fields[i][j].setImage(EMPTY_IMAGE);
+                fields[i][j].setFieldType(FieldType.EMPTY);
+            }
+        }
     }
 
     private void circleWin() {
