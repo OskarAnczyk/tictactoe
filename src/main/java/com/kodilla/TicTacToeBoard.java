@@ -28,11 +28,16 @@ public class TicTacToeBoard {
     private int draws;
     private Button buttonDifficulty;
     private File save = new File("save.file");
+    private File leaderBoard = new File("leaderBoard.file");
     private Text text;
+    private Text textLeaderBoard = new Text();
+    private SaveScore saveScore;
 
 
     public Scene makeBoard() {
         setDifficulty(Difficulty.EASY);
+        loadScore();
+        setLeaderBoard();
         setCircleWins(0);
         setCrossWins(0);
         setDraws(0);
@@ -104,20 +109,92 @@ public class TicTacToeBoard {
         buttonLoad.setOnMouseClicked(e -> {
             loadGame();
             setText();
+            lockDifficultyButton();
         });
 
         text = new Text("Circle wins: " + getCircleWins() +
                 "\nCross wins: " + getCrossWins() +
                 "\nDraws: " + getDraws());
 
+        Button buttonSaveScore = new Button("Save score");
+        buttonSaveScore.setPrefSize(100,100);
+        buttonSaveScore.setOnMouseClicked(e -> {
+            saveScore();
+            loadScore();
+            setLeaderBoard();
+        });
+
+        Button buttonResetScoreBoard = new Button("Reset score");
+        buttonResetScoreBoard.setPrefSize(100,100);
+        buttonResetScoreBoard.setOnMouseClicked(e -> {
+            SaveScore saveScore1 = new SaveScore(0,0,0,Difficulty.EASY);
+            this.saveScore = saveScore1;
+            saveScore(saveScore1);
+            setLeaderBoard();
+        });
+
         flowPane.getChildren().add(buttonReset);
         flowPane.getChildren().add(buttonDifficulty);
         flowPane.getChildren().add(buttonSave);
         flowPane.getChildren().add(buttonLoad);
         flowPane.getChildren().add(text);
+        flowPane.getChildren().add(buttonSaveScore);
+        flowPane.getChildren().add(buttonResetScoreBoard);
+        flowPane.getChildren().add(textLeaderBoard);
         flowPane.setPrefSize(900, 100);
 
         return flowPane;
+    }
+
+    private void loadScore(){
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(leaderBoard));
+            SaveScore saveScore;
+            saveScore = (SaveScore) ois.readObject();
+            this.saveScore = saveScore;
+
+            ois.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void saveScore(){
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream(leaderBoard));
+            SaveScore saveScore = new SaveScore(this.circleWins,this.crossWins,this.draws,this.difficulty);
+            oos.writeObject(saveScore);
+            oos.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void saveScore(SaveScore saveScore){
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream(leaderBoard));
+            oos.writeObject(saveScore);
+            oos.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
+    private void setLeaderBoard(){
+        if(saveScore != null){
+            this.textLeaderBoard.setText("Saved score:" +
+                    "\nCircle wins: " + saveScore.getCircleWins() +
+                    "\nCross wins: " + saveScore.getCrossWins() +
+                    "\nDraws: " + saveScore.getDraws() +
+                    "\nDifficulty: " + saveScore.getDifficulty());
+        } else {
+            this.textLeaderBoard.setText("Saved score:" +
+                    "\nCircle wins: ??" +
+                    "\nCross wins: ??" +
+                    "\nDraws: ??" +
+                    "\nDifficulty: ??");
+        }
     }
 
     private void loadGame() {
@@ -128,6 +205,8 @@ public class TicTacToeBoard {
             setCircleWins(results.getCircleWins());
             setCrossWins(results.getCrossWins());
             setDraws(results.getDraws());
+            setDifficulty(results.getDifficulty());
+            this.buttonDifficulty.setText(this.difficulty.toString());
 
 
             FieldType[][] loadedFields = results.getFields();
@@ -159,7 +238,7 @@ public class TicTacToeBoard {
     private void saveGame() {
         try {
             ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream(save));
-            Save results = new Save(this.circleWins, this.crossWins, this.draws, transferToFieldTypeArray());
+            Save results = new Save(this.circleWins, this.crossWins, this.draws, transferToFieldTypeArray(),this.getDifficulty());
             oos.writeObject(results);
             oos.close();
         } catch (Exception e) {
@@ -293,6 +372,18 @@ public class TicTacToeBoard {
 
             e.consume();
         });
+    }
+
+    private void lockDifficultyButton(){
+        boolean doLock = false;
+        for (int i = 0; i < this.fields.length; i++) {
+            for (int j = 0; j < this.fields[0].length; j++) {
+                if(this.fields[i][j].getFieldType() != FieldType.EMPTY){
+                    doLock = true;
+                }
+            }
+        }
+        this.buttonDifficulty.setDisable(doLock);
     }
 
     private boolean checkDraw() {

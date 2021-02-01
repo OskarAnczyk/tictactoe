@@ -14,12 +14,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ad5bc06-8abd-4b39-8f18-85f164957293" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kodilla/Save.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kodilla/SaveScore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/kodilla/TicTacToeBoard$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/kodilla/TicTacToeBoard$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/kodilla/TicTacToeBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/kodilla/TicTacToeBoard.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/save.file" beforeDir="false" afterPath="$PROJECT_DIR$/save.file" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kodilla/TicTacToeBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kodilla/TicTacToeBoard.java" afterDir="false" />
     </list>
@@ -154,7 +159,7 @@
       <workItem from="1611406268079" duration="5253000" />
       <workItem from="1611572249110" duration="2952000" />
       <workItem from="1612103694670" duration="7387000" />
-      <workItem from="1612176833076" duration="3841000" />
+      <workItem from="1612176833076" duration="6953000" />
     </task>
     <servers />
   </component>
@@ -178,10 +183,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="724" y="342" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612108169884" />
-    <state x="765" y="224" key="#com.intellij.ide.util.MemberChooser" timestamp="1612180361614">
+    <state x="765" y="224" key="#com.intellij.ide.util.MemberChooser" timestamp="1612182934311">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="765" y="224" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612180361614" />
+    <state x="765" y="224" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612182934311" />
     <state x="707" y="374" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1612107877246">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -190,22 +195,22 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="92" y="92" width="1736" height="896" key="DiffContextDialog/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612179350238" />
-    <state width="1877" height="295" key="GridCell.Tab.0.bottom" timestamp="1612180705489">
+    <state width="1877" height="295" key="GridCell.Tab.0.bottom" timestamp="1612183846679">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="295" key="GridCell.Tab.0.bottom/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612180705489" />
-    <state width="1877" height="295" key="GridCell.Tab.0.center" timestamp="1612180705489">
+    <state width="1877" height="295" key="GridCell.Tab.0.bottom/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612183846679" />
+    <state width="1877" height="295" key="GridCell.Tab.0.center" timestamp="1612183846679">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="295" key="GridCell.Tab.0.center/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612180705489" />
-    <state width="1877" height="295" key="GridCell.Tab.0.left" timestamp="1612180705488">
+    <state width="1877" height="295" key="GridCell.Tab.0.center/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612183846679" />
+    <state width="1877" height="295" key="GridCell.Tab.0.left" timestamp="1612183846679">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="295" key="GridCell.Tab.0.left/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612180705488" />
-    <state width="1877" height="295" key="GridCell.Tab.0.right" timestamp="1612180705489">
+    <state width="1877" height="295" key="GridCell.Tab.0.left/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612183846679" />
+    <state width="1877" height="295" key="GridCell.Tab.0.right" timestamp="1612183846679">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="295" key="GridCell.Tab.0.right/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612180705489" />
+    <state width="1877" height="295" key="GridCell.Tab.0.right/0.0.1920.1080/-1920.4.1920.1080@0.0.1920.1080" timestamp="1612183846679" />
     <state width="1877" height="363" key="GridCell.Tab.1.bottom" timestamp="1612180132216">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

@@ -2,19 +2,16 @@ package com.kodilla;
 
 import java.io.Serializable;
 
-public class Save implements Serializable {
-
+public class SaveScore implements Serializable {
     private int circleWins;
     private int crossWins;
     private int draws;
-    private FieldType[][] fields;
     private Difficulty difficulty;
 
-    public Save(int circleWins, int crossWins, int draws, FieldType[][] fields,Difficulty difficulty) {
+    public SaveScore(int circleWins, int crossWins, int draws, Difficulty difficulty) {
         this.circleWins = circleWins;
         this.crossWins = crossWins;
         this.draws = draws;
-        this.fields = fields;
         this.difficulty = difficulty;
     }
 
@@ -30,11 +27,7 @@ public class Save implements Serializable {
         return draws;
     }
 
-    public FieldType[][] getFields() {
-        return fields;
-    }
-
-    public Difficulty getDifficulty(){
+    public Difficulty getDifficulty() {
         return difficulty;
     }
 }
